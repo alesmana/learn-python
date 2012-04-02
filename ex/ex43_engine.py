@@ -5,12 +5,13 @@ class Engine(object):
         self.position = position
         
     def play(self):
-        nextlocation = self.position
+        next_location = self.position
         
         while True:
             print "\n--------"
             
-            location = getattr(self.map, nextlocation) #IMPORTANT
+            location = getattr(self.map, next_location) #IMPORTANT
 
-            nextlocation = location()
+            # get the next_location from map.xxx() method
+            next_location = location()
             
