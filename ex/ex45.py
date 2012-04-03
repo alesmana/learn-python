@@ -3,13 +3,13 @@ class Animal(object):
     pass
     
 ## is-a
-class Dog(animal):
+class Dog(Animal):
     def __init__(self, name):
         ## has-a
         self.name = name
         
 ## is-a
-class Cat(animal):
+class Cat(Animal):
     def __init__(self, name):
         ## has-a
         self.name =name
@@ -21,10 +21,10 @@ class Person(object):
         self.name = name
         
         ## Person has-a pet 
-        self.pet = None
+        self.pets = []
         
 ## is-a
-class Employee(person):
+class Employee(Person):
     def __init__(self, name, salary):
         ## ?? initializing name?
         super(Employee, self).__init__(name)
@@ -53,14 +53,14 @@ satan = Cat("Satan")
 ## mary is-a Person
 mary = Person("Mary")
 
-## mary has-a pet called satan
-mary.pet = satan
+## mary has-many pet one if it is called satan
+mary.pets.append(satan)
 
 ## frank is-a Employee
 frank = Employee("Frank", 120000)
 
-## frank has-a pet called rover
-frank.pet = rover
+## frank has-many pet one if it is called rover
+frank.pets.append(rover)
 
 ## flipper is-a fish
 flipper = Fish()
