@@ -10,7 +10,8 @@ class Sentence(object):
         self.verb = verb[1]
         self.object = object[1]
 
-
+# A way to "peek" at a potential tuple so we can make some decisions.
+# next tupple apparently
 def peek(word_list):
     if word_list:
         word = word_list[0]
@@ -18,7 +19,8 @@ def peek(word_list):
     else:
         return None
 
-
+# A way to "match" different types of tuples that we expect 
+# in our Subject Verb Object setup.
 def match(word_list, expecting):
     if word_list:
         word = word_list.pop(0)
@@ -30,7 +32,7 @@ def match(word_list, expecting):
     else:
         return None
 
-
+# A way to "skip" things we do not care about, like stop words.
 def skip(word_list, word_type):
     while peek(word_list) == word_type:
         match(word_list, word_type)
@@ -51,8 +53,10 @@ def parse_object(word_list):
 
     if next == 'noun':
         return match(word_list, 'noun')
-    if next == 'direction':
+    elif next == 'direction':
         return match(word_list, 'direction')
+    elif next == 'number':
+        return match(word_list, 'number')        
     else:
         raise ParserError("Expected a noun or direction next.")
 
