@@ -114,5 +114,6 @@ Improve the grammar by handling more things like numbers.
 Think about how you might use this Sentence class in your game to do more fun things with a user's input.
 
 see: 
-http://readthedocs.org/docs/nose/en
+http://blog.jameskyle.org/2010/10/nose-unit-testing-quick-start/
+http://readthedocs.org/docs/nose/en/latest/
 """
