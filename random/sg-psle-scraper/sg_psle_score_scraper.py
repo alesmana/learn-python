@@ -5,7 +5,7 @@ def get_seed(dummy=True):
     """Seed contains all the school links"""
     if (dummy):
         seed = """
-        <tbody><tr datagrid-row-index="0" style="height: 15px; " class="datagrid-row-over"><td field="itemid" class="schoolColumn"><div style="width:232px;text-align:left;" class="datagrid-cell "><a href="JavaScript:void window.open('SIS_SearchDtls.asp?strCode=3072&snm=ADMIRALTY+SECONDARY+SCHOOL', '_blank','top=0,left=0, width=800px,height=600px, scrollbars=yes,location=no,menubar=no,resizable=yes,status=yes,directories=no,toolbar=no')" class="style11">ADMIRALTY SECONDARY SCHOOL</a></div></td></tr><tr datagrid-row-index="1" style="height: 15px; " class="">
+        <tbody><tr datagrid-row-index="0" style="height: 15px; " class="datagrid-row-over"><td field="itemid" class="schoolColumn"><div style="width:232px;text-align:left;" class="datagrid-cell "><a href="JavaScript:void window.open('SIS_SearchDtls.asp?strCode=3072&snm=ADMIRALTY+SECONDARY+SCHOOL', '_blank','top=0,left=0, width=800px,height=600px, scrollbars=yes,location=no,menubar=no,resizable=yes,status=yes,directories=no,toolbar=no')" class="style11">ADMIRALTY SECONDARY SCHOOL</a></div></td></tr><tr datagrid-row-index="1" style="height: 15px; " class=""><td field="itemid" class="schoolColumn"><div style="width:232px;text-align:left;" class="datagrid-cell "><a href="JavaScript:void window.open('SIS_SearchDtls.asp?strCode=3201&snm=AHMAD+IBRAHIM+SECONDARY+SCHOOL', '_blank','top=0,left=0, width=800px,height=600px, scrollbars=yes,location=no,menubar=no,resizable=yes,status=yes,directories=no,toolbar=no')" class="style11">AHMAD IBRAHIM SECONDARY SCHOOL</a></div></td></tr><tr datagrid-row-index="2" style="height: 15px; " class=""><td field="itemid" class="schoolColumn"><div style="width:232px;text-align:left;" class="datagrid-cell "><a href="JavaScript:void window.open('SIS_SearchDtls.asp?strCode=3001&snm=ANDERSON+SECONDARY+SCHOOL', '_blank','top=0,left=0, width=800px,height=600px, scrollbars=yes,location=no,menubar=no,resizable=yes,status=yes,directories=no,toolbar=no')" class="style11">ANDERSON SECONDARY SCHOOL</a></div></td></tr><tr datagrid-row-index="3" style="height: 15px; " class=""><td field="itemid" class="schoolColumn"><div style="width:232px;text-align:left;" class="datagrid-cell "><a href="JavaScript:void window.open('SIS_SearchDtls.asp?strCode=3026&snm=ANG+MO+KIO+SECONDARY+SCHOOL', '_blank','top=0,left=0, width=800px,height=600px, scrollbars=yes,location=no,menubar=no,resizable=yes,status=yes,directories=no,toolbar=no')" class="style11">ANG MO KIO SECONDARY SCHOOL</a></div>
         """
     else:
         seed = """
@@ -176,7 +176,7 @@ def parse_raw_psle_score_table(school_dictionary, raw_info):
     return school_dictionary
     
     
-"""
+"""SAMPLE 
 <tr bgcolor='#EFEFEF' class='normal' style='height:12.75pt' height=17>
     <td align='center' height=17 class=normal style='height:22.75pt;border-top:none; font-weight: bold;'>Express</td>
     <td align='center'>&nbsp;206</td>
@@ -192,26 +192,15 @@ def get_psle_cutoff_point(all_schools):
     for school in all_schools:
         raw_psle_score_table = grab_raw_psle_score_table(school['url'])
         school = parse_raw_psle_score_table(school, raw_psle_score_table)
-    print all_schools
-
-def crawl_web(seed):
-    tocrawl = [seed]
-    crawled = []
-    while tocrawl:
-        page = tocrawl.pop()
-        if page not in crawled:
-            crawled.append(page)
-            union(tocrawl , get_all_links(get_page(page)))
-    return crawled
+    return all_schools
 
 def union(p,q):
     for e in q:
         if e not in p:
             p.append(e)  
             
-# print crawl_web("http://xkcd.com/353")
-all_schools = get_all_school_links(get_seed(False))
-# print all_schools
-
-get_psle_cutoff_point(all_schools)
+# get the links
+all_schools = get_all_school_links(get_seed())
+# get necessary psle schore
+all_schools = get_psle_cutoff_point(all_schools)
 
