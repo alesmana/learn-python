@@ -1,5 +1,6 @@
 import urllib2
 
+
 def get_seed(dummy=True):
     """returns html that contains all the school links"""
     # this seed is copy pasted from search performed using http://app.sis.moe.gov.sg/schinfo/SIS_AdvSearch.asp
@@ -86,7 +87,38 @@ def get_next_target(page):
 
 def grab_raw_psle_score_table(url):
     """download html code from page of url and grab the portion that contains table of psle score"""
-    
+    """ Typical score table looks like this 
+        <!-- GET AGGREGATE RANGE SECTION -->
+        <tr bgcolor='#EFEFEF' class='normal' style='height:12.75pt' height=17>
+          <td align='center' height=17 class=normal style='height:22.75pt;border-top:none; font-weight: bold;'>Express</td>
+          <td align='center'>&nbsp;206</td>
+          <td align='center'>&nbsp;225</td>
+          <td align='center'>&nbsp;211</td>
+          <td align='center'>&nbsp;210</td>
+          <td align='center' colspan='2'>None-posted</td>
+          <td align='center' colspan='2'>None-posted</td>
+        </tr>
+        <tr bgcolor='#EFEFEF' class='normal' style='height:12.75pt' height=17>
+          <td align='center' height=17 class=normal style='height:22.75pt;border-top:none; font-weight: bold;'>Normal (Academic)</td>
+          <td align='center'>&nbsp;168</td>
+          <td align='center'>&nbsp;199</td>
+          <td align='center'>&nbsp;175</td>
+          <td align='center'>&nbsp;174</td>
+          <td align='center' colspan='2'>None-posted</td>
+          <td align='center' colspan='2'>None-posted</td>
+        </tr>
+        <tr bgcolor='#EFEFEF' class='normal' style='height:12.75pt' height=17>
+          <td align='center' height=17 class=normal style='height:22.75pt;border-top:none; font-weight: bold;'>Normal (Technical)</td>
+          <td align='center'>&nbsp;119</td>
+          <td align='center'>&nbsp;159</td>
+          <td align='center'>&nbsp;134</td>
+          <td align='center'>&nbsp;134</td>
+          <td align='center' colspan='2'>None-posted</td>
+          <td align='center' colspan='2'>None-posted</td>
+        </tr>
+        <BR>
+        <!-- END OF AGGREGATE RANGE SECTION -->
+    """
     # download all the html code
     page = get_page(url)
     
