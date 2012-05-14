@@ -1,6 +1,67 @@
 import urllib2
 
+# Class of school since I am too lazy with multidimensional dictionary
+class School(object):
 
+    def __init__(self):
+        self.name = 'No name'
+        self.url  = 'No url'
+        
+        self.NA_ExpressLower    = 'NA'
+        self.NA_ExpressUpper    = 'NA'
+        self.NA_ExpressMean     = 'NA'
+        self.NA_ExpressMedian   = 'NA'
+        self.NA_NormalALower    = 'NA'
+        self.NA_NormalAUpper    = 'NA'
+        self.NA_NormalAMean     = 'NA'
+        self.NA_NormalAMedian   = 'NA'     
+        self.NA_NormalTLower    = 'NA'
+        self.NA_NormalTUpper    = 'NA'
+        self.NA_NormalTMean     = 'NA'
+        self.NA_NormalTMedian   = 'NA'
+        
+        self.A_ExpressLower     = 'NA'
+        self.A_ExpressUpper     = 'NA'
+        self.A_ExpressMean      = 'NA'
+        self.A_ExpressMedian    = 'NA'
+        self.A_NormalALower     = 'NA'
+        self.A_NormalAUpper     = 'NA'
+        self.A_NormalAMean      = 'NA'
+        self.A_NormalAMedian    = 'NA'     
+        self.A_NormalTLower     = 'NA'
+        self.A_NormalTUpper     = 'NA'
+        self.A_NormalTMean      = 'NA'
+        self.A_NormalTMedian    = 'NA'    
+
+    def test_string(self):
+        print '%s %s' % (self.name, self.url)
+        print 'NA E: %s %s %s %s Na: %s %s %s %s Nt: %s %s %s %s' % (
+          self.NA_ExpressLower, 
+          self.NA_ExpressUpper, 
+          self.NA_ExpressMean, 
+          self.NA_ExpressMedian, 
+          self.NA_NormalALower, 
+          self.NA_NormalAUpper, 
+          self.NA_NormalAMean, 
+          self.NA_NormalAMedian, 
+          self.NA_NormalTLower, 
+          self.NA_NormalTUpper, 
+          self.NA_NormalTMean, 
+          self.NA_NormalTMedian)
+        print 'A  E: %s %s %s %s Na: %s %s %s %s Nt: %s %s %s %s' % (
+          self.A_ExpressLower, 
+          self.A_ExpressUpper, 
+          self.A_ExpressMean, 
+          self.A_ExpressMedian, 
+          self.A_NormalALower, 
+          self.A_NormalAUpper, 
+          self.A_NormalAMean, 
+          self.A_NormalAMedian, 
+          self.A_NormalTLower, 
+          self.A_NormalTUpper, 
+          self.A_NormalTMean, 
+          self.A_NormalTMedian)
+          
 def get_seed(dummy=True):
     """returns html that contains all the school links"""
     # this seed is copy pasted from search performed using http://app.sis.moe.gov.sg/schinfo/SIS_AdvSearch.asp
@@ -35,14 +96,18 @@ def get_all_schools_info(page):
         # get url of the school page, school name and location of the end of the latest grabbed url
         url, school_name, endpos = get_next_target(page)
         
-        # store name and url accordingly 
-        # if there is URL, store it in links
+        
+        # if there is URL, store it in class
         if url:  
+            # store name and url accordingly 
             temp_school       = School()
             temp_school.name  = school_name
             temp_school.url   = url
             
+            # use school name as 'key'
             schools[temp_school.name]    = temp_school
+            
+            # return the page that has not been explored by get_next_target
             page = page[endpos:]
         else:
             break
@@ -81,7 +146,8 @@ def get_next_target(page):
     school_name = page[start_of_school_name+1:end_of_school_name]
     
     # Return url of the school page, school name and location of the end of the latest grabbed url
-    return url, school_name, end_quote  
+    # return url, school_name, end_quote 
+    return url, school_name, end_of_school_name     
 
 
 
@@ -265,8 +331,6 @@ def parse_one_row_of_raw_psle_score_table(school_dictionary, raw_info, start_of_
         # get location of the </tr>
         end_of_row = raw_info.find('</tr>', end_of_affiliate_values+1) #lazy
 
-        # school_dictionary['stream']                     = stream 
-        
         if stream.strip() == 'Express':
             school_dictionary.NA_ExpressLower    = lower_non_affiliate_value
             school_dictionary.NA_ExpressUpper    = upper_non_affiliate_value
@@ -294,123 +358,30 @@ def parse_one_row_of_raw_psle_score_table(school_dictionary, raw_info, start_of_
             school_dictionary.A_NormalTUpper     = upper_affiliate_value
             school_dictionary.A_NormalTMean      = mean_affiliate_value
             school_dictionary.A_NormalTMedian    = median_affiliate_value
- 
-        
-        """
-        school_dictionary['lower_affiliate_value']      = lower_affiliate_value
-        school_dictionary['upper_affiliate_value']      = upper_affiliate_value
-        school_dictionary['mean_affiliate_value']       = mean_affiliate_value
-        school_dictionary['median_affiliate_value']     = median_affiliate_value
-        
-        school_dictionary['lower_non_affiliate_value']  = lower_non_affiliate_value
-        school_dictionary['upper_non_affiliate_value']  = upper_non_affiliate_value
-        school_dictionary['mean_non_affiliate_value']   = mean_non_affiliate_value
-        school_dictionary['median_non_affiliate_value'] = median_non_affiliate_value
-        """
-        
-        """
-        print "na: %s %s %s %s aa: %s %s %s %s n: %s stream: %s" % ( 
-          school_dictionary['lower_non_affiliate_value'],
-          school_dictionary['upper_non_affiliate_value'],
-          school_dictionary['mean_non_affiliate_value'],  
-          school_dictionary['median_non_affiliate_value'],
-          school_dictionary['lower_affiliate_value'],     
-          school_dictionary['upper_affiliate_value'],     
-          school_dictionary['mean_affiliate_value'],    
-          school_dictionary['median_affiliate_value'],
-          school_dictionary['name'],
-          school_dictionary['stream'])
-        """
-        
+
         # print school_dictionary.test_string()
 
         return school_dictionary, end_of_row
     
-def get_psle_cutoff_point(all_schools):
-    for key, value in all_schools.items():
+def get_psle_cutoff_point(schools):
+    for key, value in schools.items():
         # print key, value
-        raw_psle_score_table = grab_raw_psle_score_table(all_schools[key].url)
-        all_schools[key] = parse_raw_psle_score_table(all_schools[key], raw_psle_score_table)
-    return all_schools
-    
-class School(object):
+        raw_psle_score_table = grab_raw_psle_score_table(schools[key].url)
+        schools[key] = parse_raw_psle_score_table(schools[key], raw_psle_score_table)
+    return schools
 
-    def __init__(self):
-        self.name = 'No name'
-        self.url  = 'No url'
-        
-        self.NA_ExpressLower    = 'NA'
-        self.NA_ExpressUpper    = 'NA'
-        self.NA_ExpressMean     = 'NA'
-        self.NA_ExpressMedian   = 'NA'
-        self.NA_NormalALower    = 'NA'
-        self.NA_NormalAUpper    = 'NA'
-        self.NA_NormalAMean     = 'NA'
-        self.NA_NormalAMedian   = 'NA'     
-        self.NA_NormalTLower    = 'NA'
-        self.NA_NormalTUpper    = 'NA'
-        self.NA_NormalTMean     = 'NA'
-        self.NA_NormalTMedian   = 'NA'
-        
-        self.A_ExpressLower     = 'NA'
-        self.A_ExpressUpper     = 'NA'
-        self.A_ExpressMean      = 'NA'
-        self.A_ExpressMedian    = 'NA'
-        self.A_NormalALower     = 'NA'
-        self.A_NormalAUpper     = 'NA'
-        self.A_NormalAMean      = 'NA'
-        self.A_NormalAMedian    = 'NA'     
-        self.A_NormalTLower     = 'NA'
-        self.A_NormalTUpper     = 'NA'
-        self.A_NormalTMean      = 'NA'
-        self.A_NormalTMedian    = 'NA'    
-
-    def test_string(self):
-        print '%s %s' % (self.name, self.url)
-        print 'NA E: %s %s %s %s Na: %s %s %s %s Nt: %s %s %s %s' % (
-          self.NA_ExpressLower, 
-          self.NA_ExpressUpper, 
-          self.NA_ExpressMean, 
-          self.NA_ExpressMedian, 
-          self.NA_NormalALower, 
-          self.NA_NormalAUpper, 
-          self.NA_NormalAMean, 
-          self.NA_NormalAMedian, 
-          self.NA_NormalTLower, 
-          self.NA_NormalTUpper, 
-          self.NA_NormalTMean, 
-          self.NA_NormalTMedian)
-        print 'A  E: %s %s %s %s Na: %s %s %s %s Nt: %s %s %s %s' % (
-          self.A_ExpressLower, 
-          self.A_ExpressUpper, 
-          self.A_ExpressMean, 
-          self.A_ExpressMedian, 
-          self.A_NormalALower, 
-          self.A_NormalAUpper, 
-          self.A_NormalAMean, 
-          self.A_NormalAMedian, 
-          self.A_NormalTLower, 
-          self.A_NormalTUpper, 
-          self.A_NormalTMean, 
-          self.A_NormalTMedian)
-    
 def dump_to_a_file(all_schools):
     # determine the filename header and footer
-    filename = "SchoolsInfo.dat"
+    filename = 'SchoolsInfo.dat'
     
-    header = """
-      <?xml version="1.0"?>
-      <ArrayOfSchoolInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    """
-    
-    footer = """
-      </ArrayOfSchoolInfo>
-    """
+    header = """<?xml version="1.0"?><ArrayOfSchoolInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">"""
+
+    footer = """</ArrayOfSchoolInfo>"""
     
     # Create a file object in "write" mode
     target = open(filename,'w')
     
-    # Truncate the file. 
+    # delete previous file if there is any
     target.truncate()
 
     target.write(header)
@@ -487,7 +458,6 @@ def dump_to_a_file(all_schools):
         target.write('</NA_NormalTMedian>')
         target.write('\n')
         
-
         target.write('<A_ExpressLower>')
         target.write(all_schools[key].A_ExpressLower)
         target.write('</A_ExpressLower>')
@@ -548,25 +518,21 @@ def dump_to_a_file(all_schools):
         target.write('</A_NormalTMedian>')
         target.write('\n')
 
-
         target.write('</SchoolInfo>')
         target.write('\n')
     target.write(footer)
-    
-    
+
+    # important 
     target.close()
     
 
-def union(p,q):
-    for e in q:
-        if e not in p:
-            p.append(e)  
-            
 # get the links
 all_schools = get_all_schools_info(get_seed())
+
 # get necessary psle schore
 all_schools = get_psle_cutoff_point(all_schools)
 
+# write to a file
 dump_to_a_file(all_schools)
 
 
