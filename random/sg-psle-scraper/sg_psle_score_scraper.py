@@ -149,8 +149,6 @@ def get_next_target(page):
     # return url, school_name, end_quote 
     return url, school_name, end_of_school_name     
 
-
-
 def grab_raw_psle_score_table(url):
     """download html code from page of url and grab the portion that contains table of psle score"""
     """ Typical score table looks like this 
@@ -197,7 +195,6 @@ def grab_raw_psle_score_table(url):
     psle_info = page[start_quote+1:end_quote]
     return psle_info
 
-   
 def parse_raw_psle_score_table(school, raw_info): 
     """parse the raw psle score table into something that can be processed easily"""
     # TODO Change school dictionary to class
