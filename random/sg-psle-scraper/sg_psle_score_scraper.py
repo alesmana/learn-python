@@ -84,8 +84,12 @@ def get_page(url):
         page = usock.read()
         usock.close()
         return page
+    except urllib2.HTTPError, e:
+        return 'get_page() error: %s' % str(e.code)  
+    except urllib2.URLError, e:
+        return 'get_page() error: %s' % str(e.args) 
     except:
-        return 'error' #doh!
+        return 'get_page() error'#doh!
         
 def get_all_schools_info(page):    
     """Get all links and name of school to be stored in dictionary object which will be stored in returned schools list"""
